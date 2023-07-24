@@ -4,7 +4,13 @@
 
 <script>
 export default {
-  name: 'pin-input'
+  name: "pin-input",
+  props: {
+    count: {
+      type: Number,
+      required: true,
+    },
+  },
 }
 </script>
 
