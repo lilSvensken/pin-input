@@ -2,8 +2,6 @@
   <label>
     <input
       ref="input"
-      name="c-pin-1"
-      data-pin
       type="number"
       :value="value"
       @input="onChange"

@@ -7,7 +7,10 @@
       :isFocus="index === numActiveField"
       :value="controller[index]"
       @on-focus="onFocusField(index)"
-      @on-change="onChangeInput(index, $event)"
+      @on-change="onChangeInputField(index, $event)"
+      @keydown.delete="clearField($event)"
+      @keydown.arrow-left="prevField($event, true)"
+      @keydown.arrow-right="nextField($event, true)"
     />
   </div>
 </template>
@@ -32,22 +35,32 @@ export default {
     this.controller = new Array(this.count).fill("");
   },
   methods: {
-    onChangeInput(index, fieldValue) {
+    onChangeInputField(index, fieldValue) {
       this.controller[index] = fieldValue;
 
       let newInputValue = Number(
         this.controller.map((item) => (item === "" ? "0" : item)).join("")
       );
-      this.setActiveField();
+      this.nextField();
       this.$emit("onChange", newInputValue);
     },
     onFocusField(index) {
       this.numActiveField = index;
     },
-    setActiveField() {
+    prevField() {
+      if (this.numActiveField > 1) {
+        this.numActiveField--;
+      }
+    },
+    nextField() {
       if (this.numActiveField < this.count) {
         this.numActiveField++;
       }
+    },
+    clearField(event) {
+      event.preventDefault();
+      this.controller[this.numActiveField] = "";
+      this.prevField();
     },
   },
 };
