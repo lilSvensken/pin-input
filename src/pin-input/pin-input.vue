@@ -9,8 +9,9 @@
       @on-focus="onFocusField(index)"
       @on-change="onChangeInputField(index, $event)"
       @keydown.delete="clearField($event)"
-      @keydown.arrow-left="prevField($event, true)"
-      @keydown.arrow-right="nextField($event, true)"
+      @keydown.arrow-left="downArrowLeft"
+      @keydown.arrow-right="downArrowRight"
+      @paste="onPaste"
     />
   </div>
 </template>
@@ -45,23 +46,41 @@ export default {
     },
     prevField() {
       if (this.numActiveField > 1) {
-        setTimeout(() => {
-          this.numActiveField--;
-        });
+        this.numActiveField--;
       }
     },
     nextField() {
       if (this.numActiveField < this.count) {
-        setTimeout(() => {
-          this.numActiveField++;
-        });
+        this.numActiveField++;
       }
+    },
+    downArrowLeft() {
+      setTimeout(() => {
+        this.prevField();
+      });
+    },
+    downArrowRight() {
+      setTimeout(() => {
+        this.nextField();
+      });
     },
     clearField(event) {
       event.preventDefault();
       this.controller[this.numActiveField] = "";
       this.updateController();
       this.prevField();
+    },
+    onPaste(event) {
+      event.preventDefault();
+      let paste = (event.clipboardData || window.clipboardData).getData("text");
+      this.controller.forEach((item, index) => {
+        if (paste && index === this.numActiveField - 1) {
+          this.controller[this.numActiveField] = paste[0];
+          paste = paste.slice(1);
+          this.nextField();
+        }
+      });
+      this.updateController();
     },
     updateController() {
       let newInputValue = Number(
