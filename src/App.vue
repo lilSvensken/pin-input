@@ -20,11 +20,8 @@
 </template>
 
 <script>
-import PinInput from "@/pin-input/pin-input.vue";
-
 export default {
   name: "App",
-  components: { PinInput },
   data() {
     return {
       inputValue: 12,
