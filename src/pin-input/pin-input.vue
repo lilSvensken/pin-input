@@ -1,5 +1,5 @@
 <template>
-  <div class="pin-input">
+  <div class="sv-pin">
     <field
       v-for="index in count"
       :key="index"
@@ -25,7 +25,7 @@ export default {
     defaultValue: [String, Number],
     count: Number,
   },
-  emits: ["onChange"],
+  emits: ["onChange", "onError"],
   data() {
     return {
       controller: [],
@@ -39,7 +39,7 @@ export default {
     setDefaultController() {
       this.controller = new Array(this.count).fill("");
 
-      if (this.defaultValue) {
+      if (this.defaultValue || this.defaultValue === 0) {
         const defaultValueReverse = String(this.defaultValue)
           .split("")
           .slice(0, this.count)
@@ -92,14 +92,18 @@ export default {
     onPaste(event) {
       event.preventDefault();
       let paste = (event.clipboardData || window.clipboardData).getData("text");
-      this.controller.forEach((item, index) => {
-        if (paste && index === this.numActiveField) {
-          this.controller[this.numActiveField] = paste[0];
-          paste = paste.slice(1);
-          this.nextField();
-        }
-      });
-      this.updateController();
+      if (Number(paste)) {
+        this.controller.forEach((item, index) => {
+          if (paste && index === this.numActiveField) {
+            this.controller[this.numActiveField] = paste[0];
+            paste = paste.slice(1);
+            this.nextField();
+          }
+        });
+        this.updateController();
+      } else {
+        this.$emit("onError", "Некорректный ввод");
+      }
     },
     updateController() {
       let newInputValue = Number(
@@ -111,4 +115,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss"></style>

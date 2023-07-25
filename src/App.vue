@@ -4,7 +4,12 @@
       <h2>Текущее значение:</h2>
       <p>{{ inputValue }}</p>
     </div>
-    <pin-input :count="3" :defaultValue="inputValue" @on-change="onChange" />
+    <pin-input
+      :count="8"
+      :defaultValue="inputValue"
+      @on-change="onChange"
+      @on-error="onError"
+    />
   </form>
 </template>
 
@@ -16,16 +21,19 @@ export default {
   components: { PinInput },
   data() {
     return {
-      inputValue: 123456,
+      inputValue: 0,
     };
   },
   methods: {
     onChange(newInputValue) {
       this.inputValue = newInputValue;
     },
+    onError(message) {
+      alert(message);
+    },
     onSubmit(e) {
       e.preventDefault();
-      console.log("newInputValue:", this.inputValue);
+      alert(`newInputValue: ${this.inputValue}`);
     },
   },
 };

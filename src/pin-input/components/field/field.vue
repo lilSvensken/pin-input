@@ -1,9 +1,10 @@
 <template>
-  <label>
+  <label class="sv-pin__filed-wrapper">
     <input
       ref="input"
       type="number"
       :value="value"
+      class="sv-pin__filed"
       @input="onChange"
       @focus="onFocus"
     />
@@ -48,4 +49,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss" src="./style.scss"></style>
+<style lang="scss" src="./style.scss"></style>
