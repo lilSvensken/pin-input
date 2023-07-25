@@ -19,18 +19,21 @@ export default {
     value: String,
   },
   watch: {
-    isFocus() {
-      this.setFocus();
+    isFocus(newValue, oldValue) {
+      if (newValue && !oldValue) {
+        this.setFocus();
+      }
     },
   },
   mounted() {
-    this.setFocus();
+    if (this.isFocus) {
+      this.setFocus();
+    }
   },
   methods: {
     setFocus() {
-      if (this.isFocus) {
-        this.$refs["input"].focus();
-      }
+      this.$refs["input"].focus();
+      this.$refs["input"].select();
     },
     onFocus() {
       this.$refs["input"].select();

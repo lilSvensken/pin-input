@@ -37,30 +37,37 @@ export default {
   methods: {
     onChangeInputField(index, fieldValue) {
       this.controller[index] = fieldValue;
-
-      let newInputValue = Number(
-        this.controller.map((item) => (item === "" ? "0" : item)).join("")
-      );
+      this.updateController();
       this.nextField();
-      this.$emit("onChange", newInputValue);
     },
     onFocusField(index) {
       this.numActiveField = index;
     },
     prevField() {
       if (this.numActiveField > 1) {
-        this.numActiveField--;
+        setTimeout(() => {
+          this.numActiveField--;
+        });
       }
     },
     nextField() {
       if (this.numActiveField < this.count) {
-        this.numActiveField++;
+        setTimeout(() => {
+          this.numActiveField++;
+        });
       }
     },
     clearField(event) {
       event.preventDefault();
       this.controller[this.numActiveField] = "";
+      this.updateController();
       this.prevField();
+    },
+    updateController() {
+      let newInputValue = Number(
+        this.controller.map((item) => (item === "" ? "0" : item)).join("")
+      );
+      this.$emit("onChange", newInputValue);
     },
   },
 };
