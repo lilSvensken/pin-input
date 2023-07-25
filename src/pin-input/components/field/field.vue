@@ -2,7 +2,7 @@
   <label class="sv-pin__filed-wrapper">
     <input
       ref="input"
-      type="number"
+      :type="getType"
       :value="value"
       class="sv-pin__filed"
       @input="onChange"
@@ -18,6 +18,7 @@ export default {
   props: {
     isFocus: Boolean,
     value: String,
+    hidden: Boolean,
   },
   watch: {
     isFocus(newValue, oldValue) {
@@ -44,6 +45,11 @@ export default {
       const sliceValue = event.target.value.slice(-1);
       this.$refs["input"].value = sliceValue;
       this.$emit("onChange", sliceValue);
+    },
+  },
+  computed: {
+    getType() {
+      return this.hidden ? "password" : "number";
     },
   },
 };

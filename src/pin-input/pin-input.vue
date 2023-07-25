@@ -5,6 +5,7 @@
       :key="index"
       :isFocus="isFocus(index)"
       :value="controller[index - 1]"
+      :hidden="hidden"
       @on-focus="onFocusField(index - 1)"
       @on-change="onChangeInputField(index - 1, $event)"
       @keydown.delete="clearField($event)"
@@ -24,6 +25,7 @@ export default {
   props: {
     defaultValue: [String, Number],
     count: Number,
+    hidden: Boolean,
   },
   emits: ["onChange", "onError"],
   data() {
@@ -31,6 +33,13 @@ export default {
       controller: [],
       numActiveField: 0,
     };
+  },
+  watch: {
+    defaultValue(newValue) {
+      if (!newValue) {
+        this.setDefaultController();
+      }
+    },
   },
   mounted() {
     this.setDefaultController();
@@ -106,9 +115,9 @@ export default {
       }
     },
     updateController() {
-      let newInputValue = Number(
-        this.controller.map((item) => (item === "" ? "0" : item)).join("")
-      );
+      let newInputValue = this.controller
+        .map((item) => (item === "" ? "0" : item))
+        .join("");
       this.$emit("onChange", newInputValue);
     },
   },
