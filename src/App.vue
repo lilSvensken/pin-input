@@ -4,7 +4,7 @@
       <h2>Текущее значение:</h2>
       <p>{{ inputValue }}</p>
     </div>
-    <pin-input :count="3" :inputValue="inputValue" @on-change="onChange" />
+    <pin-input :count="3" :defaultValue="inputValue" @on-change="onChange" />
   </form>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   components: { PinInput },
   data() {
     return {
-      inputValue: 0,
+      inputValue: 123456,
     };
   },
   methods: {
